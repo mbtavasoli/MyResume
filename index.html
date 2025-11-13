@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mohammad Tavasoli Kejani</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <canvas id="canvas"></canvas>
+      <h1>Mohammad Tavasoli Kejani</h1>
+      <img src="./assets/Tavasoli.jpg" alt="Profile" class="profile-img" />
+    </header>
+    <div class="container">
+      <!-- Tabs -->
+      <nav class="tabs">
+        <button class="tab-btn active" data-tab="about">About</button>
+        <button class="tab-btn" data-tab="education">Education</button>
+        <button class="tab-btn" data-tab="skills">Skills</button>
+        <button class="tab-btn" data-tab="projects">Projects</button>
+        <button class="tab-btn" data-tab="research">Research</button>
+        <button class="tab-btn" data-tab="contact">Contact</button>
+      </nav>
+
+      <!-- About -->
+      <section id="about" class="section active">
+        <h2>About Me</h2>
+        <p>
+          I’m currently pursuing a PhD at Inria, where I work on evaluating the
+          performance of open-source 5G infrastructures. Alongside that, I enjoy
+          building clean, interactive web pages.
+        </p>
+      </section>
+
+      <!-- Education -->
+      <section id="education" class="section">
+        <h2>Education</h2>
+        <div class="education-item">
+          <strong
+            >Master of Science in Electrical Engineering – Telecommunication
+            Networks</strong
+          ><br />
+          Isfahan University of Technology (IUT), Iran <em>(2017–2020)</em
+          ><br />
+          GPA: 16.83/20 (3.52/4.0) | Ranked 2nd | Honors
+        </div>
+        <div class="education-item">
+          <strong
+            >Bachelor of Science in Electrical Engineering – Electronics</strong
+          ><br />
+          University of Kashan, Iran <em>(2012–2016)</em><br />
+          Major GPA: 17.34/20 (87%)
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills" class="section">
+        <h2>Technical Skills</h2>
+        <div class="skills-grid">
+          <div class="skill">
+            <div class="skill-name">HTML / CSS <span>40%</span></div>
+            <div class="progress-container">
+              <div class="progress-bar" data-width="92"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <div class="skill-name">JavaScript <span>40%</span></div>
+            <div class="progress-container">
+              <div class="progress-bar" data-width="88"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <div class="skill-name">C / C++ / Python <span>80%</span></div>
+            <div class="progress-container">
+              <div class="progress-bar" data-width="90"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <div class="skill-name">SDN / Mininet <span>80%</span></div>
+            <div class="progress-container">
+              <div class="progress-bar" data-width="87"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <div class="skill-name">
+              Packet Tracer / Wireshark <span>90%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" data-width="95"></div>
+            </div>
+          </div>
+        </div>
+
+        <h2 style="margin-top: 2rem">Language Proficiency</h2>
+        <div class="skills-grid">
+          <div class="skill">
+            <div class="skill-name">IELTS Overall <span>7.0</span></div>
+            <div class="progress-container">
+              <div class="progress-bar" data-width="70"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <div class="skill-name">Listening <span>7.5</span></div>
+            <div class="progress-container">
+              <div class="progress-bar" data-width="75"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <div class="skill-name">Reading <span>7.5</span></div>
+            <div class="progress-container">
+              <div class="progress-bar" data-width="75"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <div class="skill-name">Speaking <span>7.0</span></div>
+            <div class="progress-container">
+              <div class="progress-bar" data-width="70"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <div class="skill-name">Writing <span>6.5</span></div>
+            <div class="progress-container">
+              <div class="progress-bar" data-width="65"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects (Gallery) -->
+      <section id="projects" class="section">
+        <h2>Featured Projects</h2>
+        <p style="text-align: center; margin-bottom: 1.5rem">
+          Interactive gallery of research and development work.
+        </p>
+        <div class="gallery">
+          <div class="gallery-controls">
+            <button class="gallery-btn prev" aria-label="Previous">
+              Previous
+            </button>
+            <button class="gallery-btn next" aria-label="Next">Next</button>
+          </div>
+          <div class="gallery-dots"></div>
+        </div>
+      </section>
+
+      <!-- Research -->
+      <section id="research" class="section">
+        <h2>Research & Publication</h2>
+        <ul class="research-list">
+          <li>
+            <strong>Publication:</strong> "An SDN-based Algorithm for Caching,
+            Routing, and Load balancing in ICN" –
+            <em>China Communications Journal</em>
+          </li>
+          <li>
+            <strong>Thesis:</strong> SDN-based ICN management with centralized
+            controller
+          </li>
+          <li>
+            <strong>Cloud/Fog/Mist in WSNs</strong> – Survey on distributed
+            computing
+          </li>
+          <li>
+            <strong>SDN in Wireless Sensor Networks</strong> – M.Sc. Seminar
+          </li>
+          <li>
+            <strong>Arduino + Raspberry Pi WSN Lab</strong> – For BSc students
+          </li>
+          <li>
+            <strong>Small Cloud Network</strong> – Cisco, VOIP, Xen, Docker
+          </li>
+        </ul>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="section">
+        <div class="contact-header">
+          <a href="mailto">mohammadbagher.tavassoli-kejani[AT]inria.fr</a>
+          <br />
+          <a href="Linkedin">Linkedin:mbtavasoli</a>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <p>
+        © 2025 Mohammad Tavasoli Kejani. Built with HTML, CSS, and JavaScript.
+      </p>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
