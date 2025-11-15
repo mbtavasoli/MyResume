@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  //   === Changing Header Color on Mouse Move ===
+  /* ===== Header Color on Mouse Move ===== */
   const header = document.querySelector("#header");
   header.addEventListener("mousemove", (e) => {
     const red = Math.min(255, Math.max(0, Math.floor((e.clientX / window.innerWidth) * 255)));
@@ -9,30 +9,34 @@ document.addEventListener("DOMContentLoaded", () => {
     header.style.color = "transparent";
   });
 
-  /* ========== INTERACTIVE Network Graph ========== */
+  /* ===== Network Graph Canvas ===== */
   const canvas = document.querySelector("#canvas");
-
   const ctx = canvas.getContext("2d");
+
+  // Set canvas size to full screen
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const NODE_COUNT = 130;
-  const LINK_RADIUS = 160;
-  const HOVER_RADIUS = 120;
+  // === Graph Configuration Constants ===
+  const NODE_COUNT = 130; // total number of nodes to display
+  const LINK_RADIUS = 160; // max distance between nodes to draw a link
+  const HOVER_RADIUS = 120; // range of mouse influence on nearby nodes
 
-  const nodes = [];
-  const links = [];
-  let mouse = { x: -9999, y: -9999 };
+  // === Graph State ===
+  const nodes = []; // array to store nodes (points)
+  const links = []; // array to store links (pairs of node indices)
+  let mouse = { x: -9999, y: -9999 }; // initial mouse position off-screen
 
-  // === Generate nicely spaced nodes ===
+  // === Generate nodes with minimum distance between each other ===
   function generateNodes() {
-    const minDist = 60;
+    const minDist = 60; // minimum allowed distance between nodes
     let tries = 0;
 
     while (nodes.length < NODE_COUNT && tries < NODE_COUNT * 100) {
       const x = Math.random() * canvas.width;
       const y = Math.random() * canvas.height * 0.95;
 
+      // check if too close to an existing node
       let tooClose = false;
       for (let node of nodes) {
         const dx = x - node.x0;
@@ -44,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (!tooClose) {
+        // add new node with initial position (x0, y0) and velocity
         nodes.push({ x, y, x0: x, y0: y, vx: 0, vy: 0 });
       }
 
@@ -51,9 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // === Build links between nearby nodes ===
+  // === Connect nodes with lines if close enough (undirected edges) ===
   function generateLinks() {
-    links.length = 0;
+    links.length = 0; // clear existing links
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
         const a = nodes[i],
@@ -62,57 +67,60 @@ document.addEventListener("DOMContentLoaded", () => {
         const dy = a.y0 - b.y0;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < LINK_RADIUS) {
-          links.push([i, j]);
+          links.push([i, j]); // store index pair
         }
       }
     }
   }
 
-  // === Interactivity ===
+  // === Mouse movement tracking ===
   canvas.addEventListener("mousemove", (e) => {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
   });
 
+  // === Reset mouse influence when it leaves the canvas ===
   canvas.addEventListener("mouseleave", () => {
     mouse.x = -9999;
     mouse.y = -9999;
   });
 
-  // === Physics + Animation ===
+  // === Update node positions with ripple + spring physics ===
   function update() {
     for (let node of nodes) {
       const dx = node.x - mouse.x;
       const dy = node.y - mouse.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      // apply ripple force if close
+      // Apply ripple force from mouse
       if (dist < HOVER_RADIUS) {
         const angle = Math.atan2(dy, dx);
-        const strength = (HOVER_RADIUS - dist) * 0.01;
+        const strength = (HOVER_RADIUS - dist) * 0.01; // stronger when closer
         node.vx += Math.cos(angle) * strength;
         node.vy += Math.sin(angle) * strength;
       }
 
-      // return to original position
+      // Apply spring force to return node to its original position
       const springX = (node.x0 - node.x) * 0.05;
       const springY = (node.y0 - node.y) * 0.05;
       node.vx += springX;
       node.vy += springY;
 
-      // damping
+      // Apply damping to smooth motion
       node.vx *= 0.85;
       node.vy *= 0.85;
 
+      // Update actual node position
       node.x += node.vx;
       node.y += node.vy;
     }
   }
 
+  // === Draw all nodes and links to the canvas ===
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // draw links
+    // Draw links between nodes
     ctx.beginPath();
     for (let [i, j] of links) {
       const a = nodes[i];
@@ -124,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    // draw nodes
+    // Draw circular nodes
     for (let node of nodes) {
       ctx.beginPath();
       ctx.arc(node.x, node.y, 2.5, 0, Math.PI * 2);
@@ -133,25 +141,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // === Animation loop ===
   function loop() {
     update();
     draw();
     requestAnimationFrame(loop);
   }
 
+  // === Initialize the graph ===
   generateNodes();
   generateLinks();
   loop();
 
-  window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    nodes.length = 0;
-    generateNodes();
-    generateLinks();
-  });
-
-  /* ========== TABS ========== */
+  /* ===== Tab Section Toggle ===== */
   const tabBtns = document.querySelectorAll(".tab-btn");
   const sections = document.querySelectorAll(".section");
 
@@ -165,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* ========== SKILL BARS ========== */
+  /* ===== Animated Skill Bars ===== */
   const animateProgressBars = () => {
     document.querySelectorAll(".progress-bar").forEach((bar) => {
       const width = bar.dataset.width;
@@ -173,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  /* ========== IMAGE GALLERY ========== */
+  /* ===== Image Gallery ===== */
   const galleryImages = [
     {
       title: "Presenting My Poster",
@@ -196,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const dotsContainer = document.querySelector(".gallery-dots");
   let currentIndex = 0;
 
-  /* ---- create slides --------------------------------------------------- */
+  // Create gallery slides
   galleryImages.forEach((image, i) => {
     const slide = document.createElement("div");
     slide.classList.add("gallery-slide");
@@ -209,16 +211,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const title = document.createElement("div");
     title.classList.add("caption");
     title.innerHTML = `<h3>${image.title}</h3>`;
+
     const caption = document.createElement("div");
     caption.classList.add("caption");
     caption.innerHTML = `<p>${image.caption}</p>`;
+
     slide.appendChild(title);
     slide.appendChild(img);
     slide.appendChild(caption);
     gallery.insertBefore(slide, gallery.querySelector(".gallery-controls"));
   });
 
-  /* ---- create dots ----------------------------------------------------- */
+  // Create dot navigation
   galleryImages.forEach((_, i) => {
     const dot = document.createElement("span");
     dot.classList.add("dot");
@@ -227,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dotsContainer.appendChild(dot);
   });
 
-  /* ---- navigation ------------------------------------------------------ */
+  // Gallery navigation logic
   const slides = gallery.querySelectorAll(".gallery-slide");
   const dots = dotsContainer.querySelectorAll(".dot");
   const prevBtn = gallery.querySelector(".prev");
