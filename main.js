@@ -1,9 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
-  /* ========== INTERACTIVE BOUNCING PARTICLES ========== */
+  //   === Changing Header Color on Mouse Move ===
+  const header = document.querySelector("#header");
+  header.addEventListener("mousemove", (e) => {
+    const red = Math.min(255, Math.max(0, Math.floor((e.clientX / window.innerWidth) * 255)));
+    const blue = Math.min(255, Math.max(0, Math.floor((e.clientY / window.innerHeight) * 255)));
+    header.style.background = `linear-gradient(60deg, rgba(200, 200, 200, 1), rgb(${red}, 0, ${blue})`;
+    header.style.backgroundClip = "text";
+    header.style.color = "transparent";
+  });
+
+  /* ========== INTERACTIVE Network Graph ========== */
   const canvas = document.querySelector("#canvas");
 
   const ctx = canvas.getContext("2d");
-
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
@@ -22,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     while (nodes.length < NODE_COUNT && tries < NODE_COUNT * 100) {
       const x = Math.random() * canvas.width;
-      const y = Math.random() * canvas.height * 0.95; // leave some top margin
+      const y = Math.random() * canvas.height * 0.95;
 
       let tooClose = false;
       for (let node of nodes) {
@@ -80,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // apply ripple force if close
       if (dist < HOVER_RADIUS) {
         const angle = Math.atan2(dy, dx);
-        const strength = (HOVER_RADIUS - dist) * 0.15;
+        const strength = (HOVER_RADIUS - dist) * 0.01;
         node.vx += Math.cos(angle) * strength;
         node.vy += Math.sin(angle) * strength;
       }
@@ -142,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
     generateLinks();
   });
 
-  /* ========== TABS (unchanged) ========== */
+  /* ========== TABS ========== */
   const tabBtns = document.querySelectorAll(".tab-btn");
   const sections = document.querySelectorAll(".section");
 
@@ -156,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* ========== SKILL BARS (unchanged) ========== */
+  /* ========== SKILL BARS ========== */
   const animateProgressBars = () => {
     document.querySelectorAll(".progress-bar").forEach((bar) => {
       const width = bar.dataset.width;
@@ -164,22 +173,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  /* ========== IMAGE GALLERY (unchanged) ========== */
-  const imageUrls = [];
+  /* ========== IMAGE GALLERY ========== */
+  const galleryImages = [
+    {
+      title: "Presenting My Poster",
+      caption: "Presenting at the PEPR Conference, Bordeaux, France",
+      src: "./assets/bordeuax.jpeg",
+    },
+    {
+      title: "Conference Talk",
+      caption: "Presenting my conference paper in Bologna, Italy",
+      src: "./assets/bologna.jpeg",
+    },
+    {
+      title: "Hiking in Kejan",
+      caption: "Hiking in the mountains of Kejan, Isfahan, Iran",
+      src: "./assets/kejan.jpeg",
+    },
+  ];
 
   const gallery = document.querySelector(".gallery");
   const dotsContainer = document.querySelector(".gallery-dots");
   let currentIndex = 0;
 
-  imageUrls.forEach((url, i) => {
+  /* ---- create slides --------------------------------------------------- */
+  galleryImages.forEach((image, i) => {
+    const slide = document.createElement("div");
+    slide.classList.add("gallery-slide");
+    if (i === 0) slide.classList.add("active");
+
     const img = document.createElement("img");
-    img.src = url;
-    img.alt = `Project ${i + 1}`;
-    if (i === 0) img.classList.add("active");
-    gallery.insertBefore(img, gallery.querySelector(".gallery-controls"));
+    img.src = image.src;
+    img.alt = image.title;
+
+    const caption = document.createElement("div");
+    caption.classList.add("caption");
+    caption.innerHTML = `<h3>${image.title}</h3><p>${image.caption}</p>`;
+
+    slide.appendChild(img);
+    slide.appendChild(caption);
+    gallery.insertBefore(slide, gallery.querySelector(".gallery-controls"));
   });
 
-  imageUrls.forEach((_, i) => {
+  /* ---- create dots ----------------------------------------------------- */
+  galleryImages.forEach((_, i) => {
     const dot = document.createElement("span");
     dot.classList.add("dot");
     if (i === 0) dot.classList.add("active");
@@ -187,20 +224,21 @@ document.addEventListener("DOMContentLoaded", () => {
     dotsContainer.appendChild(dot);
   });
 
-  const images = gallery.querySelectorAll("img");
+  /* ---- navigation ------------------------------------------------------ */
+  const slides = gallery.querySelectorAll(".gallery-slide");
   const dots = dotsContainer.querySelectorAll(".dot");
   const prevBtn = gallery.querySelector(".prev");
   const nextBtn = gallery.querySelector(".next");
 
-  const showSlide = (index) => {
-    images.forEach((img, i) => img.classList.toggle("active", i === index));
-    dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
-    currentIndex = index;
+  const showSlide = (idx) => {
+    slides.forEach((s, i) => s.classList.toggle("active", i === idx));
+    dots.forEach((d, i) => d.classList.toggle("active", i === idx));
+    currentIndex = idx;
   };
 
-  const nextSlide = () => showSlide((currentIndex + 1) % imageUrls.length);
+  const nextSlide = () => showSlide((currentIndex + 1) % galleryImages.length);
   const prevSlide = () =>
-    showSlide((currentIndex - 1 + imageUrls.length) % imageUrls.length);
+    showSlide((currentIndex - 1 + galleryImages.length) % galleryImages.length);
   const goToSlide = (i) => showSlide(i);
 
   nextBtn.addEventListener("click", nextSlide);
