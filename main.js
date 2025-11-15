@@ -206,10 +206,13 @@ document.addEventListener("DOMContentLoaded", () => {
     img.src = image.src;
     img.alt = image.title;
 
+    const title = document.createElement("div");
+    title.classList.add("caption");
+    title.innerHTML = `<h3>${image.title}</h3>`;
     const caption = document.createElement("div");
     caption.classList.add("caption");
-    caption.innerHTML = `<h3>${image.title}</h3><p>${image.caption}</p>`;
-
+    caption.innerHTML = `<p>${image.caption}</p>`;
+    slide.appendChild(title);
     slide.appendChild(img);
     slide.appendChild(caption);
     gallery.insertBefore(slide, gallery.querySelector(".gallery-controls"));
