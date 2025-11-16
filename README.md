@@ -1,6 +1,7 @@
 # My Résumé Page
 
 This single-page résumé was built only with **HTML**, **CSS**, and **JavaScript**, without any external frameworks.
+Check it out at: mbtavasoli.github.io/MyResume￼
 
 ## Key Interactive Features
 
